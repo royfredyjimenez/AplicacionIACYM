@@ -27,7 +27,6 @@ namespace CapaNegocio
             emp.Usuario = usuario;
             emp.Password = password;
             return emp.Insertar(emp);
-
         }
         // Metodo Editar que llama al metodo Editar de la Clase DEmpleados
 
@@ -43,11 +42,8 @@ namespace CapaNegocio
             emp.Imagen = imagen;
             emp.Accesso = acceso;
             emp.Password = password;
-
             return emp.Editar(emp);
         }
-
-
 
         //Método Eliminar que llama al método Eliminar de la clase DTrabajador
         //de la CapaDatos
@@ -57,8 +53,6 @@ namespace CapaNegocio
             emp.EmployeeID = EmployeeID;
             return emp.Eliminar(emp);
         }
-
-
 
 
         #endregion
@@ -98,9 +92,7 @@ namespace CapaNegocio
             return emp.Login(emp);
         }
 
-
-
-        #endregion 
+        #endregion
 
 
 

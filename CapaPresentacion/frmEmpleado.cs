@@ -21,7 +21,6 @@ namespace CapaPresentacion
     public partial class frmEmpleado : Form
     {
 
-
         private bool IsNuevo = false;
         private bool IsEditar = false;
 
@@ -49,7 +48,6 @@ namespace CapaPresentacion
 
         #endregion
 
-
         //Habilitar los controles del formulario
         private void Habilitar(bool valor)
         {
@@ -64,12 +62,10 @@ namespace CapaPresentacion
         //Habilitar los botones
         private void Botones()
         {
-
             this.txtIdEmpleado.ReadOnly = true;
             if (this.IsNuevo || this.IsEditar) //Alt + 124
             {
                 this.Habilitar(true);
-
                 this.btnNuevo.Enabled = false;
                 this.btnGuardar.Enabled = true;
                 this.btnEditar.Enabled = false;
@@ -78,7 +74,6 @@ namespace CapaPresentacion
             else
             {
                 this.Habilitar(false);
-
                 this.btnNuevo.Enabled = true;
                 this.btnGuardar.Enabled = false;
                 this.btnEditar.Enabled = true;
@@ -89,10 +84,9 @@ namespace CapaPresentacion
         //Método para ocultar columnas
         private void OcultarColumnas()
         {
-            this.dgvEmpleados.Columns[0].Visible = false; //check
-            this.dgvEmpleados.Columns[1].Visible = false; //EmployeeID
-            this.dgvEmpleados.Columns[8].Visible = false; //Photo
-            this.dgvEmpleados.Columns[9].Visible = false; //Photo
+            this.dgvEmpleados.Columns[0].Visible = false;  //check
+            this.dgvEmpleados.Columns[1].Visible = false;  //EmployeeID
+            this.dgvEmpleados.Columns[10].Visible = false; //Photo
         }
         //Método Mostrar
         private void Mostrar()
@@ -119,6 +113,7 @@ namespace CapaPresentacion
         }
 
         #endregion
+
 
         private void frmEmpleado_Load(object sender, EventArgs e)
         {
@@ -199,10 +194,8 @@ namespace CapaPresentacion
                 }
                 else
                 {
-
                     //System.IO.MemoryStream ms = new System.IO.MemoryStream();
                     //this.pxImagen.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-
                     //byte[] imagen = ms.GetBuffer();
 
                     if (this.IsNuevo)
@@ -224,7 +217,6 @@ namespace CapaPresentacion
                          this.txtAcceso.Text.Trim(),
                         // this.txtUsuario.Text.Trim(),
                          this.txtClave.Text);
-
 
                     }
 
@@ -249,7 +241,6 @@ namespace CapaPresentacion
                     this.Botones();
                     this.Limpiar();
                     this.Mostrar();
-
 
                 }
             }
@@ -334,25 +325,30 @@ namespace CapaPresentacion
            this.txtClave.Text  = Convert.ToString(this.dgvEmpleados.CurrentRow.Cells["password"].Value);
 
             // Para mostrar la imagen de la base de datos en el picture box.
-            try
+
+            if (this.dgvEmpleados.CurrentRow.Cells["Photo"].Value  == DBNull.Value)
+            // Si se 
+                 pxImagen.Image = Helpers.ImageHelper.ObtenerImagenNoDisponible();
+
+            else
             {
-                        this.pxImagen.DataBindings.Clear();
+                try
+                {
+                    this.pxImagen.DataBindings.Clear();
+                    Binding bdPhoto = new Binding("Image", dgvEmpleados.DataSource, "Photo");
+                    bdPhoto.Format += new ConvertEventHandler(this.PictureFormat);
+                    pxImagen.DataBindings.Add(bdPhoto);
+                    this.pxImagen.SizeMode = PictureBoxSizeMode.StretchImage;
 
-                        Binding bdPhoto = new Binding("Image", dgvEmpleados.DataSource, "Photo");
+                }
+                catch (Exception ex)
+                {
+                  MessageBox.Show(ex.Message);
 
-                        bdPhoto.Format += new ConvertEventHandler(this.PictureFormat);
-                        pxImagen.DataBindings.Add(bdPhoto);
-
-                        this.pxImagen.SizeMode = PictureBoxSizeMode.StretchImage;
-                        this.tabControl1.SelectedIndex = 1;
+                }
             }
-            catch (Exception ex)
-            {
-              //  pxImagen.Image = Helpers.ImageHelper.ObtenerImagenNoDisponible();
-                //MessageBox.Show(ex.Message);
 
-            }
-
+            //this.tabControl1.SelectedIndex = 1;
 
 
         }
@@ -363,12 +359,12 @@ namespace CapaPresentacion
             // e.Value es el valor original
             try
             {
-                     Byte[] img = (Byte[])e.Value;
+                Byte[] img = (Byte[])e.Value;
 
-                    //Normalmente, el campo BLOB contiene solo la imagen en si.
-                    //Desafortunadamente, este no es el caso con Northwind, en cuyas imagenes
-                    //estan prefijadas con una cabecera de 78 bytes. Entonces, Para poder crear
-                    //un objeto valido se deben evitar cargar estos bytes.
+                 //Normalmente, el campo BLOB contiene solo la imagen en si.
+                //Desafortunadamente, este no es el caso con Northwind, en cuyas imagenes
+                //estan prefijadas con una cabecera de 78 bytes. Entonces, Para poder crear
+                //un objeto valido se deben evitar cargar estos bytes.
 
                     MemoryStream ms = new MemoryStream();
                     int offset = 78;
@@ -377,13 +373,13 @@ namespace CapaPresentacion
                     ms.Close();
 
                     e.Value = bmp;
+          
 
              }
             catch (Exception ex)
             {
-                 MessageBox.Show(ex.Message);
-             //   pxImagen.Image = Helpers.ImageHelper.ObtenerImagenNoDisponible();
-
+                  MessageBox.Show(ex.Message);
+           
             }
 
 
@@ -402,12 +398,12 @@ namespace CapaPresentacion
 
         }
 
-
         private void chkEliminar_CheckedChanged(object sender, EventArgs e)
         {
             if (chkEliminar.Checked)
             {
-                this.dgvEmpleados.Columns[0].Visible = true; //EmployeeID
+                this.dgvEmpleados.Columns[0].Visible = true; //check
+                this.dgvEmpleados.Columns[1].Visible = true; //EmployeeID
             }
             else
             {
@@ -415,10 +411,7 @@ namespace CapaPresentacion
             }
         }
 
-
-    }
-
-
+       }
 
 
 

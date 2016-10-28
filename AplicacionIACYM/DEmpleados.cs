@@ -17,7 +17,7 @@ namespace AccesoDatos
         private DateTime _BirthDate;
         private string _Address;
         private string _Country;
-        public byte[] Imagen { get; set; }
+        private byte[] _Imagen;
         private string _Accesso;
         private string _Password;
         private string _Usuario;
@@ -119,6 +119,19 @@ namespace AccesoDatos
             set
             {
                 _BirthDate = value;
+            }
+        }
+
+        public byte[] Imagen
+        {
+            get
+            {
+                return _Imagen;
+            }
+
+            set
+            {
+                _Imagen = value;
             }
         }
 

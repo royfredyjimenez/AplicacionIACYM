@@ -67,22 +67,22 @@ namespace CapaPresentacion
 
         private void articulosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-
-
+            frmArticulo frm = new frmArticulo();
+            frm.MdiParent = this;
+            frm.Show();
         }
 
         private void empleadosToolStripMenuItem_Click(object sender, EventArgs e)
         {
            frmEmpleado frm = new frmEmpleado();
-           // frm.MdiParent = ;
-            frm.Show();
+           frm.MdiParent = this;
+           frm.Show();
         }
 
         private void GestionUsuario()
         {
             //COntrolar los accesos
-            if (Acceso == "Administrador")
+            if (Acceso == "Admin")
             {
                 this.MnuAlmacen.Enabled = true;
                 this.MnuCompras.Enabled = true;
@@ -144,7 +144,6 @@ namespace CapaPresentacion
 
         private void proveedorToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
             frmProveedor frm = new frmProveedor();
             frm.MdiParent = this;
             frm.Show();
@@ -152,12 +151,17 @@ namespace CapaPresentacion
 
         private void clientesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             frmCliente frm = new frmCliente();
             frm.MdiParent = this;
             frm.Show();
 
+        }
 
+        private void categoriasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmCategoria frm = new frmCategoria();
+            frm.MdiParent = this;
+            frm.Show();
         }
     }
 }
