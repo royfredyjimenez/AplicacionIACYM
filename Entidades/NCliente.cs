@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entidades
+namespace CapaNegocio
 {
-    class NArticulos
+    class NCliente
     {
+
+
+
     }
 }

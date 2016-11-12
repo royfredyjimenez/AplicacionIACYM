@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 
 
-namespace AplicacionIACYM
+namespace AccesoDatos
 {
-   public class DArticulos
+    public class DProducto
     {
-        #region Atributos encapsulados
+        #region Atributos
         private int _ProductID; //Codigo del producto
         private string _ProductName;  // Nombre del producto
         private int _SupplierID; //Codigo del proveedor
@@ -144,14 +140,14 @@ namespace AplicacionIACYM
 
         #endregion
 
-
+        #region Constructores
         //Constructores
-        public DArticulos()
+        public DProducto()
         {
 
         }
 
-        public DArticulos(int ProductID , string ProductName , int SupplierID , int CategoryID , string QuantityPerUnit , int UnitPrice , int UnitsInStock  , int UnitsOnOrder , string TextoBuscar)
+        public DProducto(int ProductID , string ProductName , int SupplierID , int CategoryID , string QuantityPerUnit , int UnitPrice , int UnitsInStock  , int UnitsOnOrder , string TextoBuscar)
         {
             this.ProductID        = ProductID;
             this.ProductName      = ProductName;
@@ -164,7 +160,10 @@ namespace AplicacionIACYM
             this.TextoBuscar      = TextoBuscar;
         }
 
-        public string Insertar(DArticulos Articulos)
+        #endregion
+
+        #region CRUD de Datos
+        public string Insertar(DProducto Producto)
         {
             string rpta = "";
             SqlConnection SqlCon = new SqlConnection();
@@ -173,15 +172,15 @@ namespace AplicacionIACYM
                 SqlCon.ConnectionString = AccesoDatos.Conexion.cadena;
 
                 SqlCon.Open();
- 
+
                 string cadenasql = string.Empty;
                 cadenasql = "INSERT INTO [dbo].[Products] ( ProductName , SupplierID , CategoryID , QuantityPerUnit ,UnitPrice , UnitsInStock ,UnitsOnOrder) ";
-                cadenasql = cadenasql + " VALUES  ('" + Articulos.ProductName + "', ";
-                cadenasql = cadenasql + ""+ Articulos.SupplierID + ",";
-                cadenasql = cadenasql + ""+ Articulos.CategoryID + ",";
-                cadenasql = cadenasql + ""+ Articulos.QuantityPerUnit + ",";
-                cadenasql = cadenasql + ""+ Articulos.UnitPrice + ",";   
-                cadenasql = cadenasql + ""+ Articulos.UnitsOnOrder + ")";
+                cadenasql = cadenasql + " VALUES  ('" + Producto.ProductName + "', ";
+                cadenasql = cadenasql + ""+ Producto.SupplierID + ",";
+                cadenasql = cadenasql + ""+ Producto.CategoryID + ",";
+                cadenasql = cadenasql + ""+ Producto.QuantityPerUnit + ",";
+                cadenasql = cadenasql + ""+ Producto.UnitPrice + ",";
+                cadenasql = cadenasql + ""+ Producto.UnitsOnOrder + ")";
 
                 //Establecer el Comando
                 SqlCommand comando = SqlCon.CreateCommand();
@@ -210,12 +209,77 @@ namespace AplicacionIACYM
             return rpta;
 
         }
+        
+        //Método Eliminar
+        public string Eliminar(DProducto Producto)
+        {
+            string rpta = "";
+            SqlConnection SqlCon = new SqlConnection();
+            try
+            {
+                //Código
+                SqlCon.ConnectionString = AccesoDatos.Conexion.cadena;
+                SqlCon.Open();
 
-      
+                string cadenasql = string.Empty;
+                cadenasql = "DELETE FROM [dbo].[Products] WHERE ProductID =" + Producto.ProductID + "";
+                //Establecer el Comando
+
+                SqlCommand comando = SqlCon.CreateCommand();
+                comando.CommandText = cadenasql;
+
+                //Ejecutamos nuestro comando
+
+                rpta = comando.ExecuteNonQuery() == 1 ? "OK" : "NO se Elimino el Registro";
+
+
+            }
+            catch (Exception ex)
+            {
+                rpta = ex.Message;
+            }
+            finally
+            {
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            return rpta;
+        }
 
 
 
 
+        #endregion
+
+        //Método Mostrar
+        public DataTable Mostrar()
+        {
+            DataTable DtResultado = new DataTable("[dbo].[Products]");
+            SqlConnection SqlCon = new SqlConnection();
+
+            try
+            {
+                SqlCon.ConnectionString = AccesoDatos.Conexion.cadena;
+                string cadenasql = string.Empty;
+                cadenasql = " SELECT TOP 100 ProductID , ProductName , SupplierID , CategoryID , QuantityPerUnit , UnitPrice , UnitsInStock , UnitsOnOrder FROM[dbo].[Products] Where Discontinued = 0 ORDER BY ProductID";
+
+                SqlCommand comando = new SqlCommand();
+                comando.Connection = SqlCon;
+                comando.CommandText = cadenasql;
+                //   comando.ExecuteReader();
+                SqlDataAdapter SqlDat = new SqlDataAdapter(comando);
+                SqlDat.Fill(DtResultado);
+
+            }
+            catch (Exception ex)
+            {
+                DtResultado = null;
+            }
+            return DtResultado;
+
+        }
+
+
+ 
 
 
 

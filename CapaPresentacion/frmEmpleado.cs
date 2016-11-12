@@ -1,19 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Sql;
 using System.Windows.Forms;
-using System.Reflection;
-using AccesoDatos;
 using CapaNegocio;
-using Helpers;
 
 
 namespace CapaPresentacion
@@ -27,7 +16,7 @@ namespace CapaPresentacion
         public frmEmpleado()
         {
               InitializeComponent();
-              this.ttMensaje.SetToolTip(this.txtNomb, "Ingrese el Nombre del Empleado");
+              this.ttMensaje.SetToolTip(this.txtNombre, "Ingrese el Nombre del Empleado");
               this.ttMensaje.SetToolTip(this.txtApellido, "Ingrese el Apellido del Empleado");
               this.ttMensaje.SetToolTip(this.txtDireccion, "Ingrese la Direccion del Empleado");
               this.ttMensaje.SetToolTip(this.txtPais, "Ingrese el Pais del empleado");
@@ -47,11 +36,11 @@ namespace CapaPresentacion
         }
 
         #endregion
-
+        #region habilitacion de controles , botones de formulario
         //Habilitar los controles del formulario
         private void Habilitar(bool valor)
         {
-            this.txtNomb.ReadOnly = !valor;
+            this.txtNombre.ReadOnly = !valor;
             this.txtApellido.ReadOnly = !valor;
             this.txtDireccion.ReadOnly = !valor;
             this.txtPais.ReadOnly = !valor;
@@ -81,6 +70,7 @@ namespace CapaPresentacion
             }
 
         }
+        #endregion
         //Método para ocultar columnas
         private void OcultarColumnas()
         {
@@ -136,25 +126,15 @@ namespace CapaPresentacion
         private void Limpiar()
         {
             this.txtIdEmpleado.Text = string.Empty;
-            this.txtNomb.Text = string.Empty;
+            this.txtNombre.Text = string.Empty;
             this.txtApellido.Text = string.Empty;
             this.txtDireccion.Text = string.Empty;
             this.txtPais.Text = string.Empty;
 
         }
-        #region Botones
-        private void btnBuscar_Click(object sender, EventArgs e)
-        {
-            if (cbBuscar.Text.Equals("Apellidos"))
-            {
-                this.BuscarApellidos();
-            }
-            else if (cbBuscar.Text.Equals("Country"))
-            {
-                this.BuscarPais();
-            }
 
-        }
+        #region Botones del formulario
+
 
         private void btnNuevo_Click(object sender, EventArgs e)
         {
@@ -163,7 +143,7 @@ namespace CapaPresentacion
             this.Botones();
             this.Limpiar();
             this.Habilitar(true);
-            this.txtNomb.Focus();
+            this.txtNombre.Focus();
 
         }
 
@@ -171,7 +151,7 @@ namespace CapaPresentacion
         private void btnCargar_Click(object sender, EventArgs e)
         {
             OpenFileDialog file = new OpenFileDialog();
-            file.Filter = "Archivo JPG|*.jpg";
+            file.Filter = "Archivo JPG|*.jpg|All Files (*.*)|*.*";
             DialogResult result = file.ShowDialog();
 
             if (result == DialogResult.OK)
@@ -186,22 +166,33 @@ namespace CapaPresentacion
         {
             try
             {
-                string rpta = "";
-                if (this.txtNomb.Text == string.Empty)
-                {
+                     string rpta = "";
+
+
+                    if (this.txtNombre.Text == string.Empty || this.txtApellido.Text == string.Empty || this.txtDireccion.Text == string.Empty
+                       || this.txtPais.Text == string.Empty || this.txtAcceso.Text == string.Empty || this.txtClave.Text == string.Empty
+                        )
+                    {
                     MensajeError("Falta ingresar algunos datos, serán remarcados");
-                    errorIcono.SetError(txtNomb, "Ingrese un valor");
+                    errorIcono.SetError(txtNombre, "Ingrese un valor");
+                    errorIcono.SetError(txtApellido, "Ingrese un valor");
+                    errorIcono.SetError(txtDireccion, "Ingrese un valor");
+                    errorIcono.SetError(txtPais, "Ingrese un valor");
+
+
                 }
                 else
                 {
-                    //System.IO.MemoryStream ms = new System.IO.MemoryStream();
-                    //this.pxImagen.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    //byte[] imagen = ms.GetBuffer();
+                    System.IO.MemoryStream ms = new System.IO.MemoryStream();
+                    this.pxImagen.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    byte[] imagen = ms.GetBuffer();
 
                     if (this.IsNuevo)
                     {
-                        rpta = NEmpleados.Insertar(this.txtApellido.Text.Trim(), this.txtNomb.Text.Trim(), dtFecha_Nacimiento.Value,
-                        this.txtDireccion.Text.Trim(), this.txtPais.Text.Trim().ToUpper(), Helpers.ImageHelper.ImageToByteArray(pxImagen.Image),
+                        rpta = NEmpleados.Insertar(this.txtApellido.Text.Trim(), this.txtNombre.Text.Trim(), dtFecha_Nacimiento.Value,
+                        this.txtDireccion.Text.Trim(),this.txtPais.Text.Trim().ToUpper(),
+                        imagen,
+                        //Helpers.ImageHelper.ImageToByteArray(pxImagen.Image),
                         this.txtAcceso.Text.Trim(), this.txtUsuario.Text.Trim(), this.txtClave.Text.Trim()
                                      );
 
@@ -210,7 +201,8 @@ namespace CapaPresentacion
                     {
                         rpta = NEmpleados.Editar(Convert.ToInt32(this.txtIdEmpleado.Text),
                          this.txtApellido.Text,
-                         this.txtNomb.Text,
+                         this.txtNombre.Text,
+                         dtFecha_Nacimiento.Value,
                          this.txtDireccion.Text,
                          this.txtPais.Text.Trim().ToUpper(),
                          Helpers.ImageHelper.ImageToByteArray(pxImagen.Image),
@@ -310,76 +302,131 @@ namespace CapaPresentacion
 
 
         }
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            this.pxImagen.SizeMode = PictureBoxSizeMode.StretchImage;
+            this.pxImagen.Image = global::CapaPresentacion.Properties.Resources.file;
+        }
+
+        private void btnImprimir_Click(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            if (cbBuscar.Text.Equals("Apellidos"))
+            {
+                this.BuscarApellidos();
+            }
+            else if (cbBuscar.Text.Equals("Country"))
+            {
+                this.BuscarPais();
+            }
+
+        }
 
         #endregion
 
+        #region dgvEmpleados
         private void dgvEmpleados_DoubleClick(object sender, EventArgs e)
         {
-// Lleno las cajas de texto con el contenido del dgvempleado
+
+            if (dgvEmpleados.SelectedRows.Count > 0 && dgvEmpleados.CurrentRow.Index < dgvEmpleados.Rows.Count)
+            {
+
+                // Lleno las cajas de texto con el contenido del dgvempleado
+
            this.txtIdEmpleado.Text  =  Convert.ToString(this.dgvEmpleados.CurrentRow.Cells["EmployeeID"].Value);
-           this.txtNomb.Text = Convert.ToString(this.dgvEmpleados.CurrentRow.Cells["FirstName"].Value);
+           this.txtNombre.Text = Convert.ToString(this.dgvEmpleados.CurrentRow.Cells["FirstName"].Value);
            this.txtApellido.Text = Convert.ToString(this.dgvEmpleados.CurrentRow.Cells["LastName"].Value);
            this.txtDireccion.Text = Convert.ToString(this.dgvEmpleados.CurrentRow.Cells["Address"].Value);
            this.txtPais.Text = Convert.ToString(this.dgvEmpleados.CurrentRow.Cells["Country"].Value);
            this.txtAcceso.Text = Convert.ToString(this.dgvEmpleados.CurrentRow.Cells["accesso"].Value);
            this.txtClave.Text  = Convert.ToString(this.dgvEmpleados.CurrentRow.Cells["password"].Value);
 
-            // Para mostrar la imagen de la base de datos en el picture box.
+                // Para mostrar la imagen de la base de datos en el picture box.
+                if (this.dgvEmpleados.CurrentRow.Cells["Photo"].Value == DBNull.Value)
+                    pxImagen.Image = Helpers.ImageHelper.ObtenerImagenNoDisponible();
 
-            if (this.dgvEmpleados.CurrentRow.Cells["Photo"].Value  == DBNull.Value)
-            // Si se 
-                 pxImagen.Image = Helpers.ImageHelper.ObtenerImagenNoDisponible();
-
-            else
-            {
-                try
+                else
                 {
-                    this.pxImagen.DataBindings.Clear();
-                    Binding bdPhoto = new Binding("Image", dgvEmpleados.DataSource, "Photo");
-                    bdPhoto.Format += new ConvertEventHandler(this.PictureFormat);
-                    pxImagen.DataBindings.Add(bdPhoto);
-                    this.pxImagen.SizeMode = PictureBoxSizeMode.StretchImage;
+                    try
+                    {
+                        Byte[] imgbd = (Byte[])this.dgvEmpleados.CurrentRow.Cells["Photo"].Value;
 
+                        if (imgbd.Length < 78)
+                        {
+
+                            pxImagen.Image = Helpers.ImageHelper.ByteArrayToImage(imgbd);
+
+
+                        }
+
+
+                        else
+                        {
+                            this.pxImagen.DataBindings.Clear();
+                            Binding bdPhoto = new Binding("Image", dgvEmpleados.DataSource, "Photo");
+                            bdPhoto.Format += new ConvertEventHandler(this.PictureFormat); //bmp
+                            pxImagen.DataBindings.Add(bdPhoto);
+                            this.pxImagen.SizeMode = PictureBoxSizeMode.StretchImage;
+
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+
+                    }
                 }
-                catch (Exception ex)
+
+                if (this.dgvEmpleados.CurrentRow.Cells["BirthDate"].Value == DBNull.Value)
+                    this.dtFecha_Nacimiento.Value = DateTime.Now.Date;
+                else
                 {
-                  MessageBox.Show(ex.Message);
-
+                    this.dtFecha_Nacimiento.Value = Convert.ToDateTime(this.dgvEmpleados.CurrentRow.Cells["BirthDate"].Value);
                 }
+
             }
 
             //this.tabControl1.SelectedIndex = 1;
 
-
         }
 
-         // Convierte los bits de imagen en un Objeto Bitmap que puede ser asignado a un PictureBox control
+        // Convierte los bits de imagen en un Objeto Bitmap que puede ser asignado a un PictureBox control
         private void PictureFormat(object sender, ConvertEventArgs e)
         {
             // e.Value es el valor original
             try
             {
-                Byte[] img = (Byte[])e.Value;
+                    Byte[] img = (Byte[])e.Value;
 
-                 //Normalmente, el campo BLOB contiene solo la imagen en si.
-                //Desafortunadamente, este no es el caso con Northwind, en cuyas imagenes
-                //estan prefijadas con una cabecera de 78 bytes. Entonces, Para poder crear
-                //un objeto valido se deben evitar cargar estos bytes.
+
+                    //Normalmente, el campo BLOB contiene solo la imagen en si.
+                    //Desafortunadamente, este no es el caso con Northwind, en cuyas imagenes
+                    //estan prefijadas con una cabecera de 78 bytes. Entonces, Para poder crear
+                    //un objeto valido se deben evitar cargar estos bytes.
 
                     MemoryStream ms = new MemoryStream();
                     int offset = 78;
+
                     ms.Write(img, offset, img.Length - offset);
+
                     Bitmap bmp = new Bitmap(ms);
+
+
                     ms.Close();
-
                     e.Value = bmp;
-          
 
-             }
+
+            }
             catch (Exception ex)
             {
                   MessageBox.Show(ex.Message);
-           
+
             }
 
 
@@ -394,8 +441,6 @@ namespace CapaPresentacion
                 DataGridViewCheckBoxCell ChkEliminar = (DataGridViewCheckBoxCell)dgvEmpleados.Rows[e.RowIndex].Cells["Eliminar"];
                 ChkEliminar.Value = !Convert.ToBoolean(ChkEliminar.Value);
             }
-
-
         }
 
         private void chkEliminar_CheckedChanged(object sender, EventArgs e)
@@ -411,8 +456,9 @@ namespace CapaPresentacion
             }
         }
 
-       }
-
-
 
     }
+
+    #endregion
+
+}

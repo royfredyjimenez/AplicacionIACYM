@@ -160,8 +160,6 @@ namespace AccesoDatos
 
         }
 
-
-
         #endregion
 
         #region CRUD de Datos
@@ -176,18 +174,18 @@ namespace AccesoDatos
                 SqlCon.ConnectionString = AccesoDatos.Conexion.cadena;
 
                 SqlCon.Open();
-
+                //Año - mes - dia
                 string cadenasql = string.Empty;
                 cadenasql = "INSERT INTO [dbo].[Employees] ( LastName , Firstname , BirthDate , Address , Country , Photo , accesso , usuario , password) ";
-                cadenasql = cadenasql + " VALUES  ('" + Empleados.LastName + "', ";
+                cadenasql = cadenasql + " VALUES  ('"+ Empleados.LastName + "', ";
                 cadenasql = cadenasql + "' " + Empleados.FirstName + "',";
-                cadenasql = cadenasql + "' " + Empleados.BirthDate + "',";
-                cadenasql = cadenasql + "' " + Empleados.Address + "' ,";
-                cadenasql = cadenasql + "' " + Empleados.Country + "', ";
-                cadenasql = cadenasql + "' " + Empleados.Imagen + "', ";
-                cadenasql = cadenasql + "' " + Empleados.Accesso + "', ";
-                cadenasql = cadenasql + "' " + Empleados.Usuario + "', ";
-                cadenasql = cadenasql + "' " + Empleados.Password + "') ";
+                cadenasql = cadenasql + "CAST('" + Empleados.BirthDate.ToShortDateString() + "' AS DATETIME),";
+                cadenasql = cadenasql + "'" + Empleados.Address + "' ,";
+                cadenasql = cadenasql + "'" + Empleados.Country + "', ";
+                cadenasql = cadenasql + "'" + Empleados.Imagen + "', ";
+                cadenasql = cadenasql + "'" + Empleados.Accesso + "', ";
+                cadenasql = cadenasql + "'" + Empleados.Usuario + "', ";
+                cadenasql = cadenasql + "'" + Empleados.Password + "') ";
 
                 //Establecer el Comando
                 SqlCommand comando = SqlCon.CreateCommand();
@@ -228,8 +226,10 @@ namespace AccesoDatos
                 string cadenasql = string.Empty;
                 cadenasql = "UPDATE [dbo].[Employees] SET LastName  = '" + Empleados.LastName + "',";
                 cadenasql = cadenasql + "FirstName = '" + Empleados.FirstName + "',";
+                cadenasql = cadenasql + "BirthDate = '" + Empleados.BirthDate.ToShortDateString() + "',";
                 cadenasql = cadenasql + "Address = '" + Empleados.Address + "',";
                 cadenasql = cadenasql + "Country = '" + Empleados.Country + "',";
+                cadenasql = cadenasql + "Photo = '" + Empleados.Imagen + "',";
                 cadenasql = cadenasql + "accesso = '" + Empleados.Accesso + "',";
                 cadenasql = cadenasql + "password = '" + Empleados.Password + "'";
                 cadenasql = cadenasql + "WHERE EmployeeID =  " + Empleados.EmployeeID + "";
@@ -297,6 +297,7 @@ namespace AccesoDatos
 
         #region Busqueda de Datos
         //Método BuscarApellidos
+
         public DataTable BuscarApellidos(DEmpleados Empleados)
         {
             DataTable DtResultado = new DataTable("[dbo].[Employees]");
@@ -334,7 +335,7 @@ namespace AccesoDatos
 
         }
 
-        //Método BuscarApellidos
+        //Método BuscarPais
         public DataTable BuscarPais(DEmpleados Empleados)
         {
             DataTable DtResultado = new DataTable("[dbo].[Employees]");
@@ -446,59 +447,6 @@ namespace AccesoDatos
 
 
         #endregion
-
-
-        //public  DEmpleados ConvertirEmpleado(IDataReader reader)
-        //{
-        //    DEmpleados empleado = new DEmpleados();
-
-        //    empleado.EmployeeID = Convert.ToInt32(reader["EmployeeID"]);
-        //    empleado.LastName = Convert.ToString(reader["LastName"]);
-        //    empleado.FirstName = Convert.ToString(reader["FirstName"]);
-        //    empleado.Address = Convert.ToString(reader["Address"]);
-        //    empleado.Country = Convert.ToString(reader["Country"]);
-        //    empleado.Accesso = Convert.ToString(reader["accesso"]);
-        //    empleado.Usuario = Convert.ToString(reader["usuario"]);
-        //    empleado.Password = Convert.ToString(reader["password"]);
-
-        //    //if (reader["Imagen"] != DBNull.Value)
-        //    //    empleado.Imagen = (byte[])reader["Imagen"];
-
-        //    return empleado;
-        //}
-
-
-        //public List<DEmpleados> ObtenerTodos()
-        //{
-        //    List<DEmpleados> lista = new List<DEmpleados>();
-
-        //    SqlConnection SqlCon = new SqlConnection();
-        //    try
-        //    {
-        //        SqlCon.ConnectionString = AccesoDatos.Conexion.cadena;
-        //        SqlCon.Open();
-        //        string cadenasql = string.Empty;
-        //        cadenasql = "SELECT TOP 100 EmployeeID , LastName , FirstName , Title , Address , City , Region , Country , Photo , accesso , usuario , password FROM [dbo].[Employees] ORDER BY LastName ASC";
-        //        SqlCommand comando = new SqlCommand();
-        //        comando.Connection = SqlCon;
-        //        comando.CommandText = cadenasql;
-
-        //        SqlDataReader reader = comando.ExecuteReader();
-
-        //        while (reader.Read())
-        //        {
-        //            lista.Add(ConvertirEmpleado(reader));
-        //        }
-
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-
-        //    return lista;
-        //}
 
 
     }

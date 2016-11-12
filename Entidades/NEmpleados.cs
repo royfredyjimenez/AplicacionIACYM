@@ -30,13 +30,14 @@ namespace CapaNegocio
         }
         // Metodo Editar que llama al metodo Editar de la Clase DEmpleados
 
-        public static string Editar(int EmployeeID, string apellidos, string nombre, string direccion, string pais, byte[] imagen, string acceso, string password)
+        public static string Editar(int EmployeeID, string apellidos, string nombre, DateTime BirthDate, string direccion, string pais, byte[] imagen, string acceso, string password)
         {
 
             DEmpleados emp = new DEmpleados();
             emp.EmployeeID = EmployeeID;
             emp.LastName = apellidos;
             emp.FirstName = nombre;
+            emp.BirthDate = BirthDate;
             emp.Address = direccion;
             emp.Country = pais;
             emp.Imagen = imagen;

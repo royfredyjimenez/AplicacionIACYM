@@ -34,7 +34,7 @@
             this.MnuSistema = new System.Windows.Forms.ToolStripMenuItem();
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuAlmacen = new System.Windows.Forms.ToolStripMenuItem();
-            this.articulosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ProductosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.categoriasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.presentacionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuCompras = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,7 +98,7 @@
             // MnuAlmacen
             // 
             this.MnuAlmacen.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.articulosToolStripMenuItem,
+            this.ProductosToolStripMenuItem,
             this.categoriasToolStripMenuItem,
             this.presentacionesToolStripMenuItem});
             this.MnuAlmacen.Image = global::CapaPresentacion.Properties.Resources.Box;
@@ -106,12 +106,12 @@
             this.MnuAlmacen.Size = new System.Drawing.Size(82, 20);
             this.MnuAlmacen.Text = "Almacen";
             // 
-            // articulosToolStripMenuItem
+            // ProductosToolStripMenuItem
             // 
-            this.articulosToolStripMenuItem.Name = "articulosToolStripMenuItem";
-            this.articulosToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            this.articulosToolStripMenuItem.Text = "Articulos";
-            this.articulosToolStripMenuItem.Click += new System.EventHandler(this.articulosToolStripMenuItem_Click);
+            this.ProductosToolStripMenuItem.Name = "ProductosToolStripMenuItem";
+            this.ProductosToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.ProductosToolStripMenuItem.Text = "Productos";
+            this.ProductosToolStripMenuItem.Click += new System.EventHandler(this.articulosToolStripMenuItem_Click);
             // 
             // categoriasToolStripMenuItem
             // 
@@ -188,7 +188,7 @@
             // 
             this.empleadosToolStripMenuItem.Image = global::CapaPresentacion.Properties.Resources.empleados_b;
             this.empleadosToolStripMenuItem.Name = "empleadosToolStripMenuItem";
-            this.empleadosToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.empleadosToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.empleadosToolStripMenuItem.Text = "Empleados";
             this.empleadosToolStripMenuItem.Click += new System.EventHandler(this.empleadosToolStripMenuItem_Click);
             // 
@@ -318,7 +318,7 @@
         private System.Windows.Forms.ToolStripMenuItem MnuVer;
         private System.Windows.Forms.ToolStripMenuItem MnuHerramientas;
         private System.Windows.Forms.ToolStripMenuItem salirToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem articulosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ProductosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem categoriasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem empleadosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ingresosToolStripMenuItem;

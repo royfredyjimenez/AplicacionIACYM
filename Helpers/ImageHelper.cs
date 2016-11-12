@@ -32,5 +32,13 @@ namespace Helpers
             Stream file = assembly.GetManifestResourceStream("Helpers.Imagenes.NoDisponible.jpg");
             return Image.FromStream(file);
         }
+        public static Image ObtenerCategoriaNoDisponible()
+        {
+            Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            Stream file = assembly.GetManifestResourceStream("Helpers.Imagenes.ProductoNoDisponible.jpg");
+            return Image.FromStream(file);
+        }
+
+
     }
 }

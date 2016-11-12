@@ -14,7 +14,6 @@ namespace CapaPresentacion
     {
 
         private int childFormNumber = 0;
-
         public string IdEmpleado = "";
         public string Apellidos = "";
         public string Nombre = "";
@@ -25,9 +24,7 @@ namespace CapaPresentacion
         {
             InitializeComponent();
         }
-
-
-
+  
         private void ShowNewForm(object sender, EventArgs e)
         {
             Form childForm = new Form();
@@ -58,8 +55,6 @@ namespace CapaPresentacion
             }
         }
 
-
-
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -67,7 +62,7 @@ namespace CapaPresentacion
 
         private void articulosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmArticulo frm = new frmArticulo();
+            frmProducto frm = new frmProducto();
             frm.MdiParent = this;
             frm.Show();
         }
@@ -78,7 +73,7 @@ namespace CapaPresentacion
            frm.MdiParent = this;
            frm.Show();
         }
-
+        #region Accesos de Usuario
         private void GestionUsuario()
         {
             //COntrolar los accesos
@@ -131,6 +126,7 @@ namespace CapaPresentacion
 
             }
         }
+        #endregion
 
         private void MnuVentas_Click(object sender, EventArgs e)
         {
@@ -141,6 +137,7 @@ namespace CapaPresentacion
         {
 
         }
+
 
         private void proveedorToolStripMenuItem1_Click(object sender, EventArgs e)
         {
